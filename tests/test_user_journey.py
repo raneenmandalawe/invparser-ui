@@ -19,6 +19,7 @@ class TestUserJourney(unittest.TestCase):
         HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
+        cls.app_url = os.getenv("APP_URL", "http://localhost:3000")
     
     @classmethod
     def tearDownClass(cls):
@@ -47,7 +48,7 @@ class TestUserJourney(unittest.TestCase):
         5. Land on dashboard
         """
         # Start at home page
-        self.page.goto("http://localhost:3000")
+        self.page.goto(self.app_url)
         login_page = LoginPage(self.page)
         login_page.assert_loaded()
 

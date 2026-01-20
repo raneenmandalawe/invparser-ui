@@ -73,6 +73,7 @@ class TestNavigationComponent(unittest.TestCase):
         HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
         cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
+        cls.app_url = os.getenv("APP_URL", "http://localhost:3000")
         cls._login()
     
     @classmethod
@@ -81,7 +82,7 @@ class TestNavigationComponent(unittest.TestCase):
         context = cls.browser.new_context()
         page = context.new_page()
         
-        page.goto("http://localhost:3000/login")
+        page.goto(f"{cls.app_url}/login")
         
         user_input = page.locator('input[type="text"], input[placeholder*="user" i]').first
         password_input = page.locator('input[type="password"]').first

@@ -1,8 +1,12 @@
+import os
 from playwright.sync_api import Page, expect
 
 
+DEFAULT_APP_URL = os.getenv("APP_URL", "http://localhost:3000")
+
+
 class BasePage:
-    def __init__(self, page: Page, base_url: str = "http://localhost:3000"):
+    def __init__(self, page: Page, base_url: str = DEFAULT_APP_URL):
         self.page = page
         self.base_url = base_url
 

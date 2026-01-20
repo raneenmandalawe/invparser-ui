@@ -9,6 +9,7 @@ from playwright.sync_api import sync_playwright, expect
 from tests.pages.login_page import LoginPage
 
 HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
+APP_URL = os.getenv('APP_URL', 'http://localhost:3000')
 
 
 class TestWithTracing(unittest.TestCase):
@@ -109,7 +110,7 @@ class TestWithAuthState(unittest.TestCase):
     def test_access_dashboard_with_saved_auth(self):
         """Test accessing dashboard without logging in (using saved auth state)."""
         # No need to log in - already authenticated!
-        self.page.goto("http://localhost:3000/dashboard")
+        self.page.goto(f"{APP_URL}/dashboard")
         
         # Should already be on dashboard
         self.assertIn("dashboard", self.page.url.lower())
@@ -121,7 +122,7 @@ class TestWithAuthState(unittest.TestCase):
     def test_access_invoices_with_saved_auth(self):
         """Test accessing invoices page without logging in (using saved auth state)."""
         # No need to log in - already authenticated!
-        self.page.goto("http://localhost:3000/invoices")
+        self.page.goto(f"{APP_URL}/invoices")
         
         # Should be on invoices page without redirect
         self.page.wait_for_timeout(1000)
@@ -134,7 +135,7 @@ class TestWithAuthState(unittest.TestCase):
     def test_access_upload_with_saved_auth(self):
         """Test accessing upload page without logging in (using saved auth state)."""
         # No need to log in - already authenticated!
-        self.page.goto("http://localhost:3000/upload")
+        self.page.goto(f"{APP_URL}/upload")
         
         # Should be on upload page without redirect
         self.page.wait_for_timeout(1000)
@@ -200,7 +201,7 @@ class TestWithClock(unittest.TestCase):
         LoginPage(self.page).load().login("admin", "admin")
         
         # Navigate to invoices to see dates
-        self.page.goto("http://localhost:3000/invoices")
+        self.page.goto(f"{APP_URL}/invoices")
         self.page.wait_for_timeout(1000)
         
         # In a real scenario, you would verify that dates are displayed correctly
