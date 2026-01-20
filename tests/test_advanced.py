@@ -2,11 +2,13 @@
 Advanced Playwright tests demonstrating tracing, authentication state, and clock manipulation.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright, expect
-import os
 
 from tests.pages.login_page import LoginPage
+
+HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
 
 
 class TestWithTracing(unittest.TestCase):
@@ -16,7 +18,7 @@ class TestWithTracing(unittest.TestCase):
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
         
         # Ensure traces directory exists
         os.makedirs("tests/traces", exist_ok=True)

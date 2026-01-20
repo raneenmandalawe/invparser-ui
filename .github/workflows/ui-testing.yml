@@ -63,14 +63,14 @@ jobs:
 
       - name: Run Playwright tests
         env:
-          HEADLESS: ${{ inputs.headless || 'true' }}
+          HEADLESS: "true"
           BROWSER: ${{ matrix.browser }}
           SCREEN_WIDTH: ${{ matrix.resolution.width }}
           SCREEN_HEIGHT: ${{ matrix.resolution.height }}
           APP_URL: ${{ env.APP_URL }}
           TEST_NAME: ${{ matrix.browser }}-${{ matrix.resolution.name }}
         run: |
-          python -m pytest tests/ -v --tb=short
+          python -m pytest tests/ -v --tb=short -p no:asyncio
 
       - name: Archive test screenshots
         if: always()
