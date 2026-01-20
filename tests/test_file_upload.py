@@ -3,9 +3,9 @@ Sample test that demonstrates file upload testing.
 This requires a test file to be present.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright, expect
-import os
 
 from tests.pages.login_page import LoginPage
 
@@ -16,8 +16,9 @@ class TestFileUpload(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
         
         # Create a simple test file if it doesn't exist
         cls.test_file_path = "tests/fixtures/sample_invoice.txt"

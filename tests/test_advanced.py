@@ -74,13 +74,7 @@ class TestWithAuthState(unittest.TestCase):
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
-        
-        # Create auth directory if it doesn't exist
-        os.makedirs("playwright/.auth", exist_ok=True)
-        
-        # Perform authentication once and save state
-        cls._perform_authentication()
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def _perform_authentication(cls):
@@ -158,7 +152,7 @@ class TestWithClock(unittest.TestCase):
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):

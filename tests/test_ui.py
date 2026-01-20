@@ -3,6 +3,7 @@ Basic UI tests for the InvParser application.
 This test suite covers basic page functionality and navigation.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright
 
@@ -15,8 +16,9 @@ class TestInvParserUI(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)  # headless=False to see the browser
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
         
     
     @classmethod

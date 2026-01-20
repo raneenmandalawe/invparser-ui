@@ -3,6 +3,7 @@ Component tests for the InvParser application.
 Tests specific UI components and their functionality.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright, expect
 
@@ -15,8 +16,9 @@ class TestLoginComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):
@@ -68,8 +70,9 @@ class TestNavigationComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
         cls._login()
     
     @classmethod
@@ -160,8 +163,9 @@ class TestUploadComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):
@@ -203,8 +207,9 @@ class TestInvoiceTableComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):
