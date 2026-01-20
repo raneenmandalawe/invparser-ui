@@ -1,0 +1,25 @@
+INVOICE #12345
+
+Date: January 15, 2024
+Vendor: Acme Corporation
+Vendor Address: 123 Main Street, Anytown, CA 90210
+
+Bill To:
+Customer Corp
+456 Business Ave
+Suite 100
+Commerce City, CA 90211
+
+Items:
+1. Widget A - Quantity: 10 @ $25.00 = $250.00
+2. Widget B - Quantity: 5 @ $50.00 = $250.00
+3. Service Fee - Quantity: 1 @ $100.00 = $100.00
+
+Subtotal: $600.00
+Tax (8.5%): $51.00
+Total: $651.00
+
+Payment Terms: Net 30
+Due Date: February 14, 2024
+
+Thank you for your business!

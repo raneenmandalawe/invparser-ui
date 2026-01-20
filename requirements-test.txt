@@ -1,0 +1,8 @@
+# Configuration for pytest
+pytest
+pytest-playwright
+playwright
+
+# For test reporting
+pytest-html
+pytest-cov

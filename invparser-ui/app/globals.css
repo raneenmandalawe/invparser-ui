@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-slate-50 font-sans text-slate-900;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-semibold;
+}
+
+h1 {
+  @apply text-3xl;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+h3 {
+  @apply text-lg;
+}
+
+/* Cards */
+.card {
+  @apply bg-white rounded-2xl border border-slate-200 shadow-sm p-6;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200 font-medium;
+}
+
+.btn-secondary {
+  @apply bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200 transition duration-200 font-medium;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  @apply w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full hover:bg-slate-400;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
