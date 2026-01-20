@@ -3,9 +3,9 @@ Sample test that demonstrates file upload testing.
 This requires a test file to be present.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright, expect
-import os
 
 from tests.pages.login_page import LoginPage
 
@@ -16,8 +16,10 @@ class TestFileUpload(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
+        cls.app_url = os.getenv("APP_URL", "http://localhost:3000").rstrip("/")
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
         
         # Create a simple test file if it doesn't exist
         cls.test_file_path = "tests/fixtures/sample_invoice.txt"
@@ -70,7 +72,7 @@ class TestFileUpload(unittest.TestCase):
         
         # For now, just verify we're still on a valid page
         current_url = self.page.url
-        self.assertIn("localhost:3000", current_url)
+        self.assertTrue(current_url.startswith(self.app_url))
     
     def test_drag_and_drop_file(self):
         """
@@ -92,7 +94,7 @@ class TestFileUpload(unittest.TestCase):
         # Verify upload feedback
         # This is where you'd check for upload progress, success messages, etc.
         current_url = self.page.url
-        self.assertIn("localhost:3000", current_url)
+        self.assertTrue(current_url.startswith(self.app_url))
 
 
 if __name__ == "__main__":

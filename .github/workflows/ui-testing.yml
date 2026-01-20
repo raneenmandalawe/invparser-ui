@@ -1,0 +1,84 @@
+name: Playwright UI Tests
+# Triggered change to rerun CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      app_url:
+        description: "Public app URL (e.g. ngrok)"
+        required: false
+        default: ""
+        type: string
+      headless:
+        description: "Run browser headless"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+jobs:
+  playwright-matrix-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+        resolution:
+          - { name: desktop, width: 1920, height: 1080 }
+          - { name: tablet, width: 768, height: 1024 }
+          - { name: mobile, width: 375, height: 667 }
+    name: "${{ matrix.browser }} - ${{ matrix.resolution.name }}"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-test.txt
+
+      - name: Install Playwright browsers
+        run: |
+          python -m playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Determine APP_URL
+        id: appurl
+        run: |
+          APP_URL="${{ inputs.app_url != '' && inputs.app_url || vars.APP_URL }}"
+          if [ -z "$APP_URL" ]; then
+            echo "APP_URL is required. Provide workflow input 'app_url' or set repo variable APP_URL." >&2
+            exit 1
+          fi
+          echo "APP_URL=$APP_URL" >> $GITHUB_ENV
+
+      - name: Run Playwright tests
+        env:
+          HEADLESS: "true"
+          BROWSER: ${{ matrix.browser }}
+          SCREEN_WIDTH: ${{ matrix.resolution.width }}
+          SCREEN_HEIGHT: ${{ matrix.resolution.height }}
+          APP_URL: ${{ env.APP_URL }}
+          TEST_NAME: ${{ matrix.browser }}-${{ matrix.resolution.name }}
+        run: |
+          python -m pytest tests/ -v --tb=short -p no:asyncio
+
+      - name: Archive test screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-screenshots-${{ matrix.browser }}-${{ matrix.resolution.name }}
+          path: |
+            *.png
+            **/*.png
+          if-no-files-found: ignore

@@ -3,6 +3,7 @@ User journey tests for the InvParser application.
 Tests complete end-to-end user flows.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright, expect
 
@@ -15,8 +16,10 @@ class TestUserJourney(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
+        cls.app_url = os.getenv("APP_URL", "http://localhost:3000")
     
     @classmethod
     def tearDownClass(cls):
@@ -45,7 +48,7 @@ class TestUserJourney(unittest.TestCase):
         5. Land on dashboard
         """
         # Start at home page
-        self.page.goto("http://localhost:3000")
+        self.page.goto(self.app_url)
         login_page = LoginPage(self.page)
         login_page.assert_loaded()
 

@@ -3,6 +3,7 @@ Component tests for the InvParser application.
 Tests specific UI components and their functionality.
 """
 
+import os
 import unittest
 from playwright.sync_api import sync_playwright, expect
 
@@ -15,8 +16,9 @@ class TestLoginComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):
@@ -68,8 +70,10 @@ class TestNavigationComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
+        cls.app_url = os.getenv("APP_URL", "http://localhost:3000")
         cls._login()
     
     @classmethod
@@ -78,7 +82,7 @@ class TestNavigationComponent(unittest.TestCase):
         context = cls.browser.new_context()
         page = context.new_page()
         
-        page.goto("http://localhost:3000/login")
+        page.goto(f"{cls.app_url}/login")
         
         user_input = page.locator('input[type="text"], input[placeholder*="user" i]').first
         password_input = page.locator('input[type="password"]').first
@@ -160,8 +164,9 @@ class TestUploadComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):
@@ -203,8 +208,9 @@ class TestInvoiceTableComponent(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the browser once for all tests in this class."""
+        HEADLESS = os.getenv('HEADLESS', 'false').lower() == 'true'
         cls.playwright = sync_playwright().start()
-        cls.browser = cls.playwright.chromium.launch(headless=False)
+        cls.browser = cls.playwright.chromium.launch(headless=HEADLESS)
     
     @classmethod
     def tearDownClass(cls):
